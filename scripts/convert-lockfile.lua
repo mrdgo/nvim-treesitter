@@ -16,7 +16,9 @@ end
 -- write new parser file
 local header = '---@type nvim-ts.parsers\nreturn '
 local parser_file = header .. vim.inspect(parsers)
+local fname = 'lua/nvim-treesitter/parsers.lua'
 if vim.fn.executable('stylua') == 1 then
-  parser_file = vim.system({ 'stylua', '-' }, { stdin = parser_file }):wait().stdout --[[@as string]]
+  parser_file =
+    vim.system({ 'stylua', '--stdin-filepath', fname, '-' }, { stdin = parser_file }):wait().stdout --[[@as string]]
 end
-util.write_file('lua/nvim-treesitter/parsers.lua', parser_file)
+util.write_file(fname, parser_file)
